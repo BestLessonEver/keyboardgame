@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find The Note</title>
+    <style>
+        body {
+            background-color: #1e1e2e;
+            color: #ffffff;
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        #note-display {
+            font-size: 2rem;
+            margin: 20px;
+        }
+        .keyboard {
+            display: flex;
+            justify-content: center;
+            margin: 20px auto;
+            flex-wrap: wrap;
+            max-width: 800px;
+        }
+        .key {
+            width: 50px;
+            height: 200px;
+            margin: 2px;
+            background: linear-gradient(to bottom, #eeeeee, #cccccc);
+            border: 2px solid #000;
+            border-radius: 5px;
+            position: relative;
+        }
+        .key.black {
+            width: 30px;
+            height: 120px;
+            background: linear-gradient(to bottom, #333333, #111111);
+            position: absolute;
+            left: 70%;
+            margin-left: -15px;
+            z-index: 1;
+        }
+        .key.correct {
+            animation: correct-key 0.5s ease;
+        }
+        @keyframes correct-key {
+            0% { background-color: #00ff00; }
+            100% { background-color: inherit; }
+        }
+        #feedback {
+            margin: 10px;
+            font-size: 1.5rem;
+        }
+        #start-game {
+            background: #ffcc00;
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Find The Note</h1>
+    <div id="note-display">Press Start!</div>
+    <div id="feedback"></div>
+    <button id="start-game">Start Game</button>
+    <div class="keyboard" id="keyboard">
+        <!-- Keys will be dynamically generated here -->
+    </div>
+    
+    <script>
+        const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+        let currentNote = "";
+
+        function generateKeyboard() {
+            const keyboard = document.getElementById('keyboard');
+            keyboard.innerHTML = "";
+            
+            notes.forEach((note, index) => {
+                const key = document.createElement('div');
+                key.classList.add('key');
+                key.dataset.note = note;
+                if (note.includes("#")) {
+                    key.classList.add('black');
+                }
+                key.addEventListener('click', () => checkAnswer(note));
+                keyboard.appendChild(key);
+            });
+        }
+
+        function startGame() {
+            document.getElementById('feedback').textContent = "";
+            currentNote = notes[Math.floor(Math.random() * notes.length)];
+            document.getElementById('note-display').textContent = `Find: ${currentNote}`;
+        }
+
+        function checkAnswer(note) {
+            const feedback = document.getElementById('feedback');
+            if (note === currentNote) {
+                feedback.textContent = "Correct!";
+                feedback.style.color = "#00ff00";
+                setTimeout(startGame, 1000);
+            } else {
+                feedback.textContent = "Try Again!";
+                feedback.style.color = "#ff0000";
+            }
+        }
+
+        document.getElementById('start-game').addEventListener('click', startGame);
+        generateKeyboard();
+    </script>
+</body>
+</html>
