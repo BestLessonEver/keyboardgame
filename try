@@ -26,6 +26,7 @@
             margin: 20px auto;
             flex-wrap: wrap;
             max-width: 800px;
+            position: relative;
         }
         .key {
             width: 50px;
@@ -35,15 +36,22 @@
             border: 2px solid #000;
             border-radius: 5px;
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            font-size: 0.8rem;
+            color: #000;
         }
         .key.black {
             width: 30px;
             height: 120px;
             background: linear-gradient(to bottom, #333333, #111111);
             position: absolute;
-            left: 70%;
             margin-left: -15px;
             z-index: 1;
+            color: #fff;
+            justify-content: center;
+            align-items: flex-end;
         }
         .key.correct {
             animation: correct-key 0.5s ease;
@@ -88,8 +96,12 @@
                 const key = document.createElement('div');
                 key.classList.add('key');
                 key.dataset.note = note;
+                key.textContent = note;
                 if (note.includes("#")) {
                     key.classList.add('black');
+                }
+                if (note.includes("#")) {
+                    key.style.left = `${(index - 0.5) * 52}px`;
                 }
                 key.addEventListener('click', () => checkAnswer(note));
                 keyboard.appendChild(key);
@@ -119,3 +131,4 @@
     </script>
 </body>
 </html>
+
